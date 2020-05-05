@@ -50,6 +50,13 @@
 
         <button type="button" class="btn" id="sendButton">Send</button>
         <button type="button" class="btn cancel" id="closeChatBox">Close</button>
+        <button type="button" class="btn" id="emojiSendButton">Send Emoji</button>
+        <select id="emoji">
+            <option value="SMILEY">&#x1F60A</option>
+            <option value="DEVIL">&#x1F608</option>
+            <option value="CRY">&#x1F622</option>
+            <option value="HUG">&#x1F917</option>
+        </select>
     </form>
 </div>
 

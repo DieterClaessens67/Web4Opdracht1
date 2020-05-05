@@ -48,7 +48,7 @@
 </c:choose>
 	<section>
 		<div id="comments"></div>
-		<p>Was het een interessante projectweek?</p>
+		<p>Was het een interessante projectweek? &#x1F600</p>
 			<label for="name">Name</label>
 			<input type="text" id="name" name="name">
 			<label for="comment">Comment</label>

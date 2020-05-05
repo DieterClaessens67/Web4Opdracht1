@@ -16,10 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
 import db.MessageRepositoryStub;
-import domain.MessageService;
-import domain.Person;
-import domain.PersonService;
-import domain.UserStatus;
+import domain.*;
 
 @WebServlet("/Controller")
 public class Controller extends HttpServlet {
@@ -58,6 +55,7 @@ public class Controller extends HttpServlet {
 			RequestDispatcher view = request.getRequestDispatcher(destination);
 			view.forward(request, response);
 		}else {
+			Person user =  (Person) request.getSession().getAttribute("user");
 			switch (action) {
 				case "ChangeStatus":
 					String status = request.getParameter("status");
@@ -70,42 +68,46 @@ public class Controller extends HttpServlet {
 						} else {
 							request.getSession().setAttribute("statusUser", status.toUpperCase());
 						}
-						Person user = (Person) request.getSession().getAttribute("user");
 						user.setStatus(status.toUpperCase());
 						response.getWriter().write(status.toUpperCase());
 					}
 					break;
 				case "GetFriends":
-					Person user = (Person) request.getSession().getAttribute("user");
 					JsonObject jsonObject = model.getFriends(user.getUserId());
 					response.getWriter().write(jsonObject.toString());
 					break;
 				case "AddFriend":
-					Person user1 = (Person) request.getSession().getAttribute("user");
 					String newFriendFirstName = request.getParameter("firstName");
 					if(newFriendFirstName != null && !newFriendFirstName.trim().isEmpty()) {
 						Person newFriend = model.getPersonWithFirstName(request.getParameter("firstName"));
 						if(newFriend != null) {
-							user1.addFriend(newFriend);
-							newFriend.addFriend(user1);
-							JsonObject jsonObject1 = model.getFriends(user1.getUserId());
+							user.addFriend(newFriend);
+							newFriend.addFriend(user);
+							JsonObject jsonObject1 = model.getFriends(user.getUserId());
 							response.getWriter().write(jsonObject1.toString());
 						}
 					}
 					break;
 				case "Message":
-					Person user2 = (Person) request.getSession().getAttribute("user");
 					String message = request.getParameter("message");
 					String recipientId = request.getParameter("recipient");
 					Person recipient = model.getPerson(recipientId);
-					messageModel.addMessage(user2,recipient,message);
-					JsonObject jsonObject2 = messageModel.getMessages(user2);
+					messageModel.addMessage(user,recipient,message);
+					JsonObject jsonObject2 = messageModel.getMessages(user);
 					response.getWriter().write(jsonObject2.toString());
 					break;
 				case "GetMessages":
-					Person user3 = (Person) request.getSession().getAttribute("user");
-					JsonObject jsonObject1 = messageModel.getMessages(user3);
+					JsonObject jsonObject1 = messageModel.getMessages(user);
 					response.getWriter().write(jsonObject1.toString());
+					break;
+				case "Emoji":
+					String identifier = request.getParameter("identifier");
+					String emojiMessage = Emoji.valueOf(identifier).getHex();
+					String recipientId2 = request.getParameter("recipient");
+					Person recipient2 = model.getPerson(recipientId2);
+					messageModel.addMessage(user,recipient2,emojiMessage);
+					JsonObject jsonObject3 = messageModel.getMessages(user);
+					response.getWriter().write(jsonObject3.toString());
 					break;
 				default:
 					String destination = "index.jsp";

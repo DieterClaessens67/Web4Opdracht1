@@ -1,4 +1,5 @@
 $('#sendButton').on("click",sendMessage);
+$('#emojiSendButton').on("click",sendSmileyEmoji);
 $(window).on("load",getMessages);
 
 let xHRObject3 = new XMLHttpRequest();
@@ -11,6 +12,12 @@ function sendMessage() {
     let $recipientId = $chatRecip.val();
     xHRObject3.open("POST","Controller?action=Message&message="+$messageText+"&recipient="+$recipientId, true);
     xHRObject3.send(null);
+}
+
+function sendSmileyEmoji(){
+    let $recipientId = $chatRecip.val();
+    let $emojiID = $('#emoji').val();
+    $.get("Controller?action=Emoji&identifier=" + $emojiID + "&recipient="+$recipientId,true);
 }
 
 function getMessages() {
@@ -31,7 +38,12 @@ function getData2() {
                     (jsonResponse[message].recipientId === $recipient || jsonResponse[message].senderId === $recipient)) {
                     let messageLine = document.createElement('p');
                     let sender = document.createTextNode(jsonResponse[message].sender +": ");
-                    let messageLineText = document.createTextNode(jsonResponse[message].message);
+                    let messageLineText = "";
+                    if(jsonResponse[message].message.substring(0,3) === "&#x"){
+                        messageLineText = document.createTextNode(String.fromCodePoint("0x"+jsonResponse[message].message.substring(3)));
+                    }else{
+                        messageLineText = document.createTextNode(jsonResponse[message].message);
+                    }
                     messageLine.appendChild(sender);
                     messageLine.appendChild(messageLineText);
                     $messagesStuff.append(messageLine);
