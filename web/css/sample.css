@@ -214,3 +214,8 @@ nav ul li#current {
 	max-height: 400px;
 	overflow-y: scroll;
 }
+
+#signUpButton{
+	text-align: right;
+	width: 80%;
+}

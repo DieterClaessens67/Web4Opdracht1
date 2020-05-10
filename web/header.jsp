@@ -8,9 +8,11 @@
 <c:choose>
 <c:when test="${user==null}">
 <li><a href="Controller">Home</a></li>
+<li><a href="Controller?action=ShowSignUp">Sign Up</a> </li>
 </c:when>
 <c:otherwise>
 <li><a href="Controller">Home</a></li>
+<li><a href="Controller?action=ShowSignUp">Sign Up</a> </li>
 <li><a href="Controller?action=ShowChat">Chat</a> </li>
 </c:otherwise>
 </c:choose>

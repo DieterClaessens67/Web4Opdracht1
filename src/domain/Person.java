@@ -19,10 +19,12 @@ public class Person {
 	private Role role;
 	private Map<String, Person> friends;
 	private String status;
+	private Gender gender;
+	private int age;
 
 
 	public Person(String userId, String password, String firstName,
-				  String lastName, Role role) {
+				  String lastName, Role role, Gender gender) {
 		setUserId(userId);
 		setHashedPassword(password);
 		setFirstName(firstName);
@@ -30,10 +32,11 @@ public class Person {
 		setRole(role);
 		this.friends = new HashMap<>();
 		this.status = "OFFLINE";
+		setGender(gender);
 	}
 
 	public Person(String userId, String password, String salt,
-				  String firstName, String lastName, Role role) {
+				  String firstName, String lastName, Role role, Gender gender) {
 		setUserId(userId);
 		setPassword(password);
 		setSalt(salt);
@@ -42,6 +45,7 @@ public class Person {
 		setRole(role);
 		this.friends = new HashMap<>();
 		this.status = "OFFLINE";
+		setGender(gender);
 	}
 
 	public Person() {
@@ -185,5 +189,24 @@ public class Person {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
+	public void setGenderWithString(String gender){
+		if(gender== null) {
+			throw new IllegalArgumentException("No gender given");
+		}
+		this.gender = Gender.valueOf(gender.toUpperCase());
+	}
+
+	public void setAge(int age){
+		this.age = age;
+	}
+
+	public void setFriends(Map<String, Person> friends) {
+		this.friends = friends;
 	}
 }

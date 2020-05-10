@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.Gender;
 import domain.Person;
 import domain.Role;
 
@@ -12,11 +13,11 @@ public class PersonRepositoryStub implements PersonRepository {
 	private Map<String, Person> persons = new HashMap<String, Person>();
 	
 	public PersonRepositoryStub () {
-		Person administrator = new Person("bib@ucll.be", "t", "Bib", "Liothekaris", Role.BIB);
+		Person administrator = new Person("bib@ucll.be", "t", "Bib", "Liothekaris", Role.BIB, Gender.MALE);
 		add(administrator);
-		Person jan = new Person("jan@ucll.be", "t", "Jan", "Janssens", Role.LID);
+		Person jan = new Person("jan@ucll.be", "t", "Jan", "Janssens", Role.LID,Gender.MALE);
 		add(jan);
-		Person an = new Person("an@ucll.be", "t", "An", "Cornelissen", Role.LID);
+		Person an = new Person("an@ucll.be", "t", "An", "Cornelissen", Role.LID,Gender.FEMALE);
 		add(an);
 	}
 	
